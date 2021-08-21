@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    private var grid: [[Int]] = Array(repeating: Array(repeating: 0, count: 4), count: 4)
+    private var grid: [[Int?]] = Array(repeating: Array(repeating: nil, count: 4), count: 4)
     private var collectionView: UICollectionView! //= UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
     
     override func viewDidLoad() {
@@ -84,7 +84,7 @@ class ViewController: UIViewController {
     private func addRandomBitToGrid() {
         let randomRow = Int(arc4random_uniform(3))
         let randomColum = Int(arc4random_uniform(3))
-        grid = grid.map { $0.map { $0 * 0 }}
+        grid = grid.map { $0.map { _ in nil }}
         grid[randomColum][randomRow] = arc4random_uniform(3) > 1 ? 2 : 4
         collectionView.reloadData()
     }
@@ -106,7 +106,6 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reuse", for: indexPath) as! GridCell
         cell.backgroundColor = .brown
-        cell.largeContentTitle = "test me if you can"
         let number = grid[indexPath.section][indexPath.row]
         cell.set(number: number)
         return cell

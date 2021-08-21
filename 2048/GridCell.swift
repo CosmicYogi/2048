@@ -30,7 +30,7 @@ class GridCell: UICollectionViewCell {
         numberLabel.textAlignment = .center
     }
     
-    func set(number: Int) {
-        numberLabel.text = String(number)
+    func set(number: Int?) {
+        numberLabel.text = number.map { String($0) }
     }
 }
