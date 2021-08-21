@@ -61,10 +61,10 @@ class ViewController: UIViewController {
     @objc private func onSwipeGesture(gesture: UIGestureRecognizer) {
         guard let gesture = gesture as? UISwipeGestureRecognizer else { return }
         switch gesture.direction {
-        case .up: print("up")
-        case .down: print("down")
-        case .right: print("right")
-        case .left: print("left")
+        case .up: upShift()
+        case .down: downShift()
+        case .right: rightShift()
+        case .left: leftShift()
         default: print("default")
         }
     }
@@ -82,16 +82,85 @@ class ViewController: UIViewController {
     }
     
     private func addRandomBitToGrid() {
-        let randomRow = Int(arc4random_uniform(3))
-        let randomColum = Int(arc4random_uniform(3))
-        grid = grid.map { $0.map { _ in nil }}
-        grid[randomColum][randomRow] = arc4random_uniform(3) > 1 ? 2 : 4
+        let randomRow = Int(arc4random_uniform(4))
+        let randomColum = Int(arc4random_uniform(4))
+//        grid = grid.map { $0.map { _ in nil }}
+        grid[randomRow][randomColum] = arc4random_uniform(3) > 1 ? 2 : 4
         collectionView.reloadData()
     }
     
 //    private func transform(_ arrayCoordinate: (x: Int, y: Int)) -> (x: Int, y: Int) {
 //        return
 //    }
+    
+    private func upShift() {
+        print("up shift")
+//        grid = grid.map { $0.map { $0.map { $0 * 4 }}}
+        rotateSingleUp()
+    }
+    
+    private func downShift() {
+        print("down shift")
+        rotateSingleDown()
+    }
+    
+    private func leftShift() {
+        print("left shift")
+        grid = grid.map { rotateSingleLeft($0) }
+        collectionView.reloadData()
+    }
+    
+    private func rightShift() {
+        print("right shift")
+        grid = grid.map { rotateSingleRight($0) }
+        collectionView.reloadData()
+    }
+    
+    private func rotateSingleLeft(_ array : [Int?]) -> [Int?]{
+        let first = array[0]
+        var array = array
+        for i in 0..<array.count - 1 {
+            array[i] = array[i + 1]
+        }
+        array[array.count - 1] = first
+        return array
+    }
+    
+    func rotateSingleRight(_ array : [Int?]) -> [Int?] {
+        let last = array[array.count - 1]
+        var array = array
+        for i in (1..<array.count).reversed() {
+            array[i] = array[i - 1]
+        }
+        array[0] = last
+        return array
+    }
+    
+    func rotateSingleUp() {
+        for i in 0..<grid[0].count {
+            var temp = [ grid[0][i], grid[1][i], grid[2][i], grid[3][i] ]
+            temp = rotateSingleLeft(temp)
+            grid[0][i] = temp[0]
+            grid[1][i] = temp[1]
+            grid[2][i] = temp[2]
+            grid[3][i] = temp[3]
+        }
+        
+        collectionView.reloadData()
+    }
+    
+    func rotateSingleDown() {
+        for i in 0..<grid[0].count {
+            var temp = [ grid[0][i], grid[1][i], grid[2][i], grid[3][i] ]
+            temp = rotateSingleRight(temp)
+            grid[0][i] = temp[0]
+            grid[1][i] = temp[1]
+            grid[2][i] = temp[2]
+            grid[3][i] = temp[3]
+        }
+        
+        collectionView.reloadData()
+    }
 }
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
