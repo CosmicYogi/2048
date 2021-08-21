@@ -20,7 +20,8 @@ class ViewController: UIViewController {
     private func _init() {
         initCollectionView()
         initGestureRecognizer()
-        tempButton()
+        initSeedButton()
+        initClearButton()
     }
     
     private func initCollectionView() {
@@ -65,28 +66,75 @@ class ViewController: UIViewController {
         case .down: downShift()
         case .right: rightShift()
         case .left: leftShift()
-        default: print("default")
+        default: break
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.seed()
         }
     }
     
-    private func tempButton() {
-        let tempButton = UIButton(frame: .init(x: 50, y: 500, width: 100, height: 50))
-        view.addSubview(tempButton)
-        tempButton.setTitle("Seed", for: .normal)
-        tempButton.backgroundColor = .gray
-        tempButton.addTarget(self, action: #selector(onTempTap), for: .touchUpInside)
+    private func initSeedButton() {
+        let seedButton = UIButton(frame: .init(x: 50, y: 500, width: 100, height: 50))
+        view.addSubview(seedButton)
+        seedButton.setTitle("Seed", for: .normal)
+        seedButton.backgroundColor = .gray
+        seedButton.addTarget(self, action: #selector(seed), for: .touchUpInside)
     }
 
-    @objc private func onTempTap() {
+    @objc private func seed() {
         addRandomBitToGrid()
+    }
+    
+    private func initClearButton() {
+        let clearButton = UIButton(frame: .init(x: 180, y: 500, width: 100, height: 50))
+        view.addSubview(clearButton)
+        clearButton.setTitle("Clear", for: .normal)
+        clearButton.backgroundColor = .gray
+        clearButton.addTarget(self, action: #selector(clear), for: .touchUpInside)
+    }
+    
+    @objc private func clear() {
+        for i in 0..<grid.count {
+            for j in 0..<grid[i].count {
+                grid[i][j] = nil
+            }
+        }
+        collectionView.reloadData()
     }
     
     private func addRandomBitToGrid() {
         let randomRow = Int(arc4random_uniform(4))
         let randomColum = Int(arc4random_uniform(4))
 //        grid = grid.map { $0.map { _ in nil }}
-        grid[randomRow][randomColum] = arc4random_uniform(3) > 1 ? 2 : 4
+        var unoccupiedCells: [(x: Int, y: Int)] = [
+        ]
+        
+        for i in 0..<grid.count {
+            for j in 0..<grid[i].count {
+                if grid[i][j] == nil {
+                    unoccupiedCells.append((x: i, y: j))
+                }
+            }
+        }
+        print("unoccupied cells are")
+        guard unoccupiedCells.count > 0 else {
+            print("GameOver")
+            return
+        }
+        let randomUnOccupiedCellsLocation = arc4random_uniform(UInt32(unoccupiedCells.count))
+        let seedLocation = unoccupiedCells[Int(randomUnOccupiedCellsLocation)]
+        
+//        grid[randomRow][randomColum] = arc4random_uniform(3) > 1 ? 2 : 4
+        grid[seedLocation.x][seedLocation.y] = arc4random_uniform(3) > 1 ? 2 : 4
         collectionView.reloadData()
+        
+        for i in 0..<grid.count {
+            for j in 0..<grid[i].count {
+                if grid[i][j] == nil {
+                    unoccupiedCells.append((x: i, y: j))
+                }
+            }
+        }
     }
     
 //    private func transform(_ arrayCoordinate: (x: Int, y: Int)) -> (x: Int, y: Int) {
@@ -116,25 +164,74 @@ class ViewController: UIViewController {
         collectionView.reloadData()
     }
     
+    private var stateLeft = 0
+    private var stateLeftCheck = true
+    
     private func rotateSingleLeft(_ array : [Int?]) -> [Int?]{
-        let first = array[0]
         var array = array
-        for i in 0..<array.count - 1 {
-            array[i] = array[i + 1]
+        for i in (1...array.count).reversed() {
+            if array[i - 1] == nil && i < array.count{
+                array[i - 1] = array[i]
+                array[i] = nil
+            }
+            
         }
-        array[array.count - 1] = first
+        for var i in (1...array.count - 1).reversed() {
+            if let value = array[i - 1], let nextValue = array[i], value == nextValue, stateLeftCheck {
+                array[i - 1] = value * 2
+                array[i] = nil
+                i -= 1
+                stateLeftCheck = false
+                break
+            }
+        }
+        
+        if stateLeft < array.count {
+            stateLeft += 1
+            array = rotateSingleLeft(array)
+        } else {
+            stateLeft = 0
+            stateLeftCheck = true
+        }
         return array
     }
     
+    private var stateRight = 0
+    private var stateRightCheck = true
+    
     func rotateSingleRight(_ array : [Int?]) -> [Int?] {
-        let last = array[array.count - 1]
         var array = array
-        for i in (1..<array.count).reversed() {
-            array[i] = array[i - 1]
+        for i in (1...array.count - 1) {
+            if array[i] == nil {
+                array[i] = array[i - 1]
+                array[i - 1] = nil
+            }
+            
         }
-        array[0] = last
+        for var i in (1...array.count - 1) {
+            if let value = array[i], let previousValue = array[i - 1], value == previousValue, stateRightCheck {
+                array[i] = value * 2
+                array[i - 1] = nil
+                i += 1
+                stateRightCheck = false
+//                array = rotateSingleRight(array)
+                break
+            }
+        }
+        
+        if stateRight < array.count {
+            stateRight += 1
+            array = rotateSingleRight(array)
+        } else {
+            stateRight = 0
+            stateRightCheck = true
+        }
+        
         return array
     }
+    
+    private var stateUp = 0
+    private var stateUpCheck = true
     
     func rotateSingleUp() {
         for i in 0..<grid[0].count {
@@ -148,6 +245,9 @@ class ViewController: UIViewController {
         
         collectionView.reloadData()
     }
+    
+    private var stateDown = 0
+    private var stateDownCheck = true
     
     func rotateSingleDown() {
         for i in 0..<grid[0].count {
