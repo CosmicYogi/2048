@@ -9,21 +9,108 @@ import UIKit
 
 class GameViewController: UIViewController {
 
+    // MARK: - Outlets
+    
+    @IBOutlet weak var welcomeLabel: UILabel!
+    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var collectionViewContainer: UIView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    // MARK: - Variables and constants
+    private var userName: String!
+    private var viewModel: GameViewModel!
+    private var grid: [[Int?]] = []
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        _init()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func _init() {
+        initCollectionView()
+        initGestureRecognizer()
+        initViewModel()
     }
-    */
+    
+    private func initCollectionView() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.isUserInteractionEnabled = false
+    }
+    
+    private func initViewModel() {
+        viewModel = GameViewModel(presenter: self)
+    }
+    
+    private func initGestureRecognizer() {
+        let gestureRecognizerUp = UISwipeGestureRecognizer(target: self, action: #selector(onSwipeGesture))
+        let gestureRecognizerDown = UISwipeGestureRecognizer(target: self, action: #selector(onSwipeGesture))
+        let gestureRecognizerLeft = UISwipeGestureRecognizer(target: self, action: #selector(onSwipeGesture))
+        let gestureRecognizerRight = UISwipeGestureRecognizer(target: self, action: #selector(onSwipeGesture))
+        gestureRecognizerUp.direction = .up
+        gestureRecognizerDown.direction = .down
+        gestureRecognizerRight.direction = .right
+        gestureRecognizerRight.direction = .left
 
+        view.addGestureRecognizer(gestureRecognizerUp)
+        view.addGestureRecognizer(gestureRecognizerDown)
+        view.addGestureRecognizer(gestureRecognizerLeft)
+        view.addGestureRecognizer(gestureRecognizerRight)
+    }
+    
+    @objc private func onSwipeGesture(gesture: UIGestureRecognizer) {
+        guard let gesture = gesture as? UISwipeGestureRecognizer else { return }
+        switch gesture.direction {
+        case .up: viewModel.move(.up)
+        case .down: viewModel.move(.down)
+        case .right: viewModel.move(.right)
+        case .left: viewModel.move(.left)
+        default: break
+        }
+    }
+}
+
+//MARK: - CollectionView delegate, datasource
+extension GameViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        grid[section].count
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        grid.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // rename to game cell.
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "game_cell", for: indexPath) as! GameCell
+//        cell.backgroundColor = .brown
+//        let number = grid[indexPath.section][indexPath.row]
+//        cell.set(number: number)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.bounds.width / CGFloat(grid.count) - 8
+        return CGSize(width: width, height: width)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return .init(top: 2, left: 2, bottom: 2, right: 2)
+    }
+}
+
+//MARK: - GamePresenting
+extension GameViewController: GamePresenting {
+    
+    func present(userName: String) {
+        welcomeLabel.text = "Welcome \(userName)"
+    }
+    
+    func update(grid: [[Int?]]) {
+        print(grid)
+    }
+
+    func update(score: Int) {
+        scoreLabel.text = "Score: \(score)"
+    }
 }

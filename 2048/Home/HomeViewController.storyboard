@@ -15,9 +15,46 @@
                     <view key="view" contentMode="scaleToFill" id="36S-h9-vro">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="@username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OcZ-TT-6mI">
+                                <rect key="frame" x="20" y="738" width="374" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="l5x-df-nZ2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PDl-b0-vge">
+                                <rect key="frame" x="20" y="796" width="374" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="zSk-ev-cCH"/>
+                                </constraints>
+                                <state key="normal" title="Start"/>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="olk-gC-4E3">
+                                <rect key="frame" x="20" y="52" width="374" height="678"/>
+                            </imageView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="JAo-UC-PLm"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="JAo-UC-PLm" firstAttribute="bottom" secondItem="PDl-b0-vge" secondAttribute="bottom" constant="16" id="8QQ-BG-AiU"/>
+                            <constraint firstItem="PDl-b0-vge" firstAttribute="top" secondItem="OcZ-TT-6mI" secondAttribute="bottom" constant="8" id="AwO-uL-h2x"/>
+                            <constraint firstItem="JAo-UC-PLm" firstAttribute="trailing" secondItem="PDl-b0-vge" secondAttribute="trailing" constant="20" id="BgH-qj-PL3"/>
+                            <constraint firstItem="olk-gC-4E3" firstAttribute="trailing" secondItem="PDl-b0-vge" secondAttribute="trailing" id="LvF-8n-GwX"/>
+                            <constraint firstItem="OcZ-TT-6mI" firstAttribute="trailing" secondItem="PDl-b0-vge" secondAttribute="trailing" id="Q5f-2e-A5L"/>
+                            <constraint firstItem="PDl-b0-vge" firstAttribute="leading" secondItem="JAo-UC-PLm" secondAttribute="leading" constant="20" id="Sto-cd-Rjq"/>
+                            <constraint firstItem="olk-gC-4E3" firstAttribute="top" secondItem="JAo-UC-PLm" secondAttribute="top" constant="8" id="Yra-nR-60v"/>
+                            <constraint firstItem="OcZ-TT-6mI" firstAttribute="leading" secondItem="PDl-b0-vge" secondAttribute="leading" id="bYD-8C-daD"/>
+                            <constraint firstItem="OcZ-TT-6mI" firstAttribute="top" secondItem="olk-gC-4E3" secondAttribute="bottom" constant="8" id="sVE-yf-qm6"/>
+                            <constraint firstItem="olk-gC-4E3" firstAttribute="leading" secondItem="PDl-b0-vge" secondAttribute="leading" id="uj2-ad-1tb"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="bottomPadding" destination="8QQ-BG-AiU" id="8Nc-1T-8jr"/>
+                        <outlet property="startButton" destination="PDl-b0-vge" id="SxD-uy-1z4"/>
+                        <outlet property="userNameTextField" destination="OcZ-TT-6mI" id="IoV-Yx-OO6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WL5-GH-DQb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -25,6 +62,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="logo" width="300" height="300"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
