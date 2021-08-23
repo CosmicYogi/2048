@@ -112,8 +112,7 @@ class GameViewModel: BaseViewModel<GamePresenting> {
             if let value = array[i - 1], let nextValue = array[i], value == nextValue, leftRotationShouldMergeNumbers {
                 array[i - 1] = value * 2
                 array[i] = nil
-                score += array[i - 1] ?? 0
-                presenter.update(score: score)
+                updateScore(array[i - 1] ?? 0)
                 i -= 1
                 leftRotationShouldMergeNumbers = false
                 break
@@ -142,8 +141,7 @@ class GameViewModel: BaseViewModel<GamePresenting> {
             if let value = array[i], let previousValue = array[i - 1], value == previousValue, rightRotationShouldMergeNumbers {
                 array[i] = value * 2
                 array[i - 1] = nil
-                score += array[i]!
-                presenter.update(score: score)
+                updateScore(array[i] ?? 0)
                 i += 1
                 rightRotationShouldMergeNumbers = false
                 break
@@ -157,6 +155,39 @@ class GameViewModel: BaseViewModel<GamePresenting> {
             rightRotationShouldMergeNumbers = true
         }
         return array
+    }
+    
+    func setUser(_ userName: String) {
+        let attributedWelcomeMessage = getAttributedNameValuePair(fromName: StringsProvider.ViewControllers.Game.welcome, value: userName)
+        presenter.present(welcomeMessage: attributedWelcomeMessage)
+    }
+    
+    func updateScore(_ score: Int) {
+        self.score += score
+        let scoreAttributedString = getAttributedNameValuePair(fromName: StringsProvider.ViewControllers.Game.score, value: String(self.score))
+        presenter.update(score: scoreAttributedString)
+    }
+    
+    private func getAttributedWelcomeMessage(fromUserName userName: String) -> NSAttributedString {
+        let welcomeAttributedString = NSMutableAttributedString(string: "\(StringsProvider.ViewControllers.Game.welcome): ")
+        let userNameAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: Colors.primaryText.withAlphaComponent(0.8),
+            .font: FontsProvider.shared.getFont(.clearSans(weight: .bold), size: 30)
+        ]
+        let nameAttributedString = NSAttributedString(string: userName, attributes: userNameAttributes)
+        welcomeAttributedString.append(nameAttributedString)
+        return welcomeAttributedString
+    }
+    
+    private func getAttributedNameValuePair(fromName name: String, value: String) -> NSAttributedString {
+        let nameAttributedString = NSMutableAttributedString(string: "\(name): ")
+        let valueAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: Colors.primaryText.withAlphaComponent(0.8),
+            .font: FontsProvider.shared.getFont(.clearSans(weight: .bold), size: 30)
+        ]
+        let valueAttributedString = NSAttributedString(string: value, attributes: valueAttributes)
+        nameAttributedString.append(valueAttributedString)
+        return nameAttributedString
     }
 }
 

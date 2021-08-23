@@ -41,6 +41,7 @@ class GameViewController: UIViewController {
     
     private func initViewModel() {
         viewModel = GameViewModel(presenter: self)
+        viewModel.setUser(userName)
     }
     
     private func initGestureRecognizer() {
@@ -68,6 +69,12 @@ class GameViewController: UIViewController {
         case .left: viewModel.move(.left)
         default: break
         }
+    }
+    
+    // MARK: - Outside communication
+    
+    func setUser(_ userName: String) {
+        self.userName = userName
     }
 }
 
@@ -98,8 +105,8 @@ extension GameViewController: UICollectionViewDataSource, UICollectionViewDelega
 //MARK: - GamePresenting
 extension GameViewController: GamePresenting {
     
-    func present(userName: String) {
-        welcomeLabel.text = "\(StringsProvider.ViewControllers.Game.welcome): \(userName)"
+    func present(welcomeMessage: NSAttributedString) {
+        welcomeLabel.attributedText = welcomeMessage
     }
     
     func update(grid: [[Int?]]) {
@@ -108,7 +115,7 @@ extension GameViewController: GamePresenting {
         collectionView.reloadData()
     }
 
-    func update(score: Int) {
-        scoreLabel.text = "\(StringsProvider.ViewControllers.Game.score): \(score)"
+    func update(score: NSAttributedString) {
+        scoreLabel.attributedText = score
     }
 }

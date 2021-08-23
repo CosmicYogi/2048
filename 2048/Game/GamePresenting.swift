@@ -5,8 +5,10 @@
 //  Created by Mitesh Soni on 23/08/21.
 //
 
+import UIKit
+
 protocol GamePresenting {
-    func present(userName: String)
+    func present(welcomeMessage: NSAttributedString)
     func update(grid: [[Int?]])
-    func update(score: Int)
+    func update(score: NSAttributedString)
 }

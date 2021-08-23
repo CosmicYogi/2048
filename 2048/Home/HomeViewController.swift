@@ -81,10 +81,7 @@ extension HomeViewController: UITextFieldDelegate {
 // MARK: - HomePresenting
 extension HomeViewController: HomePresenting {
     func startGameForUser(_ userName: String) {
-        push(.game, animated: true)
-//        let viewController = ViewControllerDebugging()
-//        viewController.modalPresentationStyle = .fullScreen
-//        present(viewController, animated: true)
+        push(.game(userName: userName), animated: true)
     }
     
     func showError(_ error: Error) {

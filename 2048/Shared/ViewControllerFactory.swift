@@ -10,7 +10,7 @@ import UIKit
 /// Enum containing all the view controllers
 enum ViewController {
     case home
-    case game
+    case game(userName: String)
 }
 
 /**
@@ -36,15 +36,19 @@ class ViewControllerFactory {
     func getViewController(_ viewController: ViewController) -> UIViewController{
         switch viewController {
         case .home: return HomeViewController.instance()
-        case .game: return GameViewController.instance()
+        case .game(let userName): return createGameViewController(fromUserName: userName)
         // All the other cases would be handled here.
         }
     }
 
     
     // MARK:- Create View Controllers
-    // Nothing a.t.m, We would write funcntions here for initializing view controllers which have some dependencies.
-    // Would call those functions from `getViewController` corresponding to the respective ViewController enum.
+    
+    private func createGameViewController(fromUserName userName: String) -> GameViewController {
+        let gameViewController: GameViewController = GameViewController.instance()
+        gameViewController.setUser(userName)
+        return gameViewController
+    }
 }
 
 
