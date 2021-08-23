@@ -17,6 +17,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - Variables and constants
+    private let reusableIdentifier = "game_cell"
     private var userName: String!
     private var viewModel: GameViewModel!
     private var grid: [[Int?]] = []
@@ -81,7 +82,7 @@ extension GameViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "game_cell", for: indexPath) as! GameCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reusableIdentifier, for: indexPath) as! GameCell
         let number = grid[indexPath.section][indexPath.row]
         cell.set(number: number)
         return cell
@@ -98,7 +99,7 @@ extension GameViewController: UICollectionViewDataSource, UICollectionViewDelega
 extension GameViewController: GamePresenting {
     
     func present(userName: String) {
-        welcomeLabel.text = "Welcome \(userName)"
+        welcomeLabel.text = "\(StringsProvider.ViewControllers.Game.welcome): \(userName)"
     }
     
     func update(grid: [[Int?]]) {
@@ -108,6 +109,6 @@ extension GameViewController: GamePresenting {
     }
 
     func update(score: Int) {
-        scoreLabel.text = "Score: \(score)"
+        scoreLabel.text = "\(StringsProvider.ViewControllers.Game.score): \(score)"
     }
 }

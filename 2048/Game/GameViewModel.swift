@@ -19,6 +19,7 @@ class GameViewModel: BaseViewModel<GamePresenting> {
     // MARK: - Variables and constants
     
     private var grid: [[Int?]] = Array(repeating: Array(repeating: nil, count: 4), count: 4)
+    private var score = 0
     private var leftRotationCount = 0
     private var rightRotationCount = 0
     private var leftRotationShouldMergeNumbers = true
@@ -111,6 +112,8 @@ class GameViewModel: BaseViewModel<GamePresenting> {
             if let value = array[i - 1], let nextValue = array[i], value == nextValue, leftRotationShouldMergeNumbers {
                 array[i - 1] = value * 2
                 array[i] = nil
+                score += array[i - 1] ?? 0
+                presenter.update(score: score)
                 i -= 1
                 leftRotationShouldMergeNumbers = false
                 break
@@ -139,6 +142,8 @@ class GameViewModel: BaseViewModel<GamePresenting> {
             if let value = array[i], let previousValue = array[i - 1], value == previousValue, rightRotationShouldMergeNumbers {
                 array[i] = value * 2
                 array[i - 1] = nil
+                score += array[i]!
+                presenter.update(score: score)
                 i += 1
                 rightRotationShouldMergeNumbers = false
                 break
