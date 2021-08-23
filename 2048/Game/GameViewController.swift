@@ -21,9 +21,9 @@ class GameViewController: UIViewController {
     private var userName: String!
     private var viewModel: GameViewModel!
     private var grid: [[Int?]] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         _init()
     }
     
