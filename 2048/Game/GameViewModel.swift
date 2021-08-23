@@ -160,23 +160,13 @@ class GameViewModel: BaseViewModel<GamePresenting> {
     func setUser(_ userName: String) {
         let attributedWelcomeMessage = getAttributedNameValuePair(fromName: StringsProvider.ViewControllers.Game.welcome, value: userName)
         presenter.present(welcomeMessage: attributedWelcomeMessage)
+        updateScore(0)
     }
     
     func updateScore(_ score: Int) {
         self.score += score
         let scoreAttributedString = getAttributedNameValuePair(fromName: StringsProvider.ViewControllers.Game.score, value: String(self.score))
         presenter.update(score: scoreAttributedString)
-    }
-    
-    private func getAttributedWelcomeMessage(fromUserName userName: String) -> NSAttributedString {
-        let welcomeAttributedString = NSMutableAttributedString(string: "\(StringsProvider.ViewControllers.Game.welcome): ")
-        let userNameAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: Colors.primaryText.withAlphaComponent(0.8),
-            .font: FontsProvider.shared.getFont(.clearSans(weight: .bold), size: 30)
-        ]
-        let nameAttributedString = NSAttributedString(string: userName, attributes: userNameAttributes)
-        welcomeAttributedString.append(nameAttributedString)
-        return welcomeAttributedString
     }
     
     private func getAttributedNameValuePair(fromName name: String, value: String) -> NSAttributedString {
@@ -188,6 +178,14 @@ class GameViewModel: BaseViewModel<GamePresenting> {
         let valueAttributedString = NSAttributedString(string: value, attributes: valueAttributes)
         nameAttributedString.append(valueAttributedString)
         return nameAttributedString
+    }
+    
+    func reset() {
+        grid = grid.map { $0.map { _ in nil }}
+        score = 0
+        let scoreAttributedString = getAttributedNameValuePair(fromName: StringsProvider.ViewControllers.Game.score, value: "0")
+        presenter.update(grid: grid)
+        presenter.update(score: scoreAttributedString)
     }
 }
 

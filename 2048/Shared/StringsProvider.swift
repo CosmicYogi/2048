@@ -15,6 +15,7 @@ enum StringsProvider {
         enum Game {
             static let score = "Score"
             static let welcome = "Welcome"
+            static let newGame = "New Game"
         }
     }
     

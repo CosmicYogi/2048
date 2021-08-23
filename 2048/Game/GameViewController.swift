@@ -13,7 +13,7 @@ class GameViewController: UIViewController {
     
     @IBOutlet weak var welcomeLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var collectionViewContainer: UIView!
+    @IBOutlet weak var newGameButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - Variables and constants
@@ -28,9 +28,15 @@ class GameViewController: UIViewController {
     }
     
     private func _init() {
+        initViews()
         initCollectionView()
         initGestureRecognizer()
         initViewModel()
+    }
+    
+    private func initViews() {
+        newGameButton.setTitle(StringsProvider.ViewControllers.Game.newGame, for: .normal)
+        newGameButton.addTarget(self, action: #selector(reset), for: .touchUpInside)
     }
     
     private func initCollectionView() {
@@ -69,6 +75,10 @@ class GameViewController: UIViewController {
         case .left: viewModel.move(.left)
         default: break
         }
+    }
+    
+    @objc private func reset() {
+        viewModel.reset()
     }
     
     // MARK: - Outside communication
