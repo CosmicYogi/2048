@@ -19,7 +19,15 @@ class GameViewModel: BaseViewModel<GamePresenting> {
     // MARK: - Variables and constants
     
     private var grid: [[Int?]] = Array(repeating: Array(repeating: nil, count: 4), count: 4)
+    private var leftRotationCount = 0
+    private var rightRotationCount = 0
+    private var leftRotationShouldMergeNumbers = true
+    private var rightRotationShouldMergeNumbers = true
     
+    override init(presenter: GamePresenting) {
+        super.init(presenter: presenter)
+        seed()
+    }
     
     // MARK: - Business Logic
     
@@ -62,19 +70,88 @@ class GameViewModel: BaseViewModel<GamePresenting> {
     
     
     private func upShift() {
-        
+        for i in 0..<grid[0].count {
+            var temp = [ grid[0][i], grid[1][i], grid[2][i], grid[3][i] ]
+            temp = squashArrayLeft(temp)
+            grid[0][i] = temp[0]
+            grid[1][i] = temp[1]
+            grid[2][i] = temp[2]
+            grid[3][i] = temp[3]
+        }
     }
-    
+
     private func downShift() {
-        
+        for i in 0..<grid[0].count {
+            var temp = [ grid[0][i], grid[1][i], grid[2][i], grid[3][i] ]
+            temp = squashArrayRight(temp)
+            grid[0][i] = temp[0]
+            grid[1][i] = temp[1]
+            grid[2][i] = temp[2]
+            grid[3][i] = temp[3]
+        }
     }
-    
+
     private func leftShift() {
-        
+        grid = grid.map { squashArrayLeft($0) }
     }
     
     private func rightShift() {
-        
+        grid = grid.map { squashArrayRight($0) }
+    }
+    
+    private func squashArrayLeft(_ array : [Int?]) -> [Int?]{
+        var array = array
+        for i in (1...array.count).reversed() {
+            if array[i - 1] == nil && i < array.count{
+                array[i - 1] = array[i]
+                array[i] = nil
+            }
+        }
+        for var i in (1...array.count - 1).reversed() {
+            if let value = array[i - 1], let nextValue = array[i], value == nextValue, leftRotationShouldMergeNumbers {
+                array[i - 1] = value * 2
+                array[i] = nil
+                i -= 1
+                leftRotationShouldMergeNumbers = false
+                break
+            }
+        }
+        if leftRotationCount < array.count {
+            leftRotationCount += 1
+            array = squashArrayLeft(array)
+        } else {
+            leftRotationCount = 0
+            leftRotationShouldMergeNumbers = true
+        }
+        return array
+    }
+
+    func squashArrayRight(_ array : [Int?]) -> [Int?] {
+        var array = array
+        for i in (1...array.count - 1) {
+            if array[i] == nil {
+                array[i] = array[i - 1]
+                array[i - 1] = nil
+            }
+
+        }
+        for var i in (1...array.count - 1) {
+            if let value = array[i], let previousValue = array[i - 1], value == previousValue, rightRotationShouldMergeNumbers {
+                array[i] = value * 2
+                array[i - 1] = nil
+                i += 1
+                rightRotationShouldMergeNumbers = false
+                break
+            }
+        }
+        if rightRotationCount < array.count {
+            rightRotationCount += 1
+            array = squashArrayRight(array)
+        } else {
+            rightRotationCount = 0
+            rightRotationShouldMergeNumbers = true
+        }
+        return array
     }
 }
 

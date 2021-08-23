@@ -81,21 +81,16 @@ extension GameViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // rename to game cell.
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "game_cell", for: indexPath) as! GameCell
-//        cell.backgroundColor = .brown
-//        let number = grid[indexPath.section][indexPath.row]
-//        cell.set(number: number)
+        let number = grid[indexPath.section][indexPath.row]
+        cell.set(number: number)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width / CGFloat(grid.count) - 8
-        return CGSize(width: width, height: width)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: 2, left: 2, bottom: 2, right: 2)
+        let height = collectionView.bounds.width / CGFloat(grid.count)
+        return CGSize(width: width, height: height)
     }
 }
 
@@ -108,6 +103,8 @@ extension GameViewController: GamePresenting {
     
     func update(grid: [[Int?]]) {
         print(grid)
+        self.grid = grid
+        collectionView.reloadData()
     }
 
     func update(score: Int) {

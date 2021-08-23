@@ -3,7 +3,6 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -39,7 +38,7 @@
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4ED-fD-7id">
                                 <rect key="frame" x="20.5" y="261.5" width="373" height="373"/>
-                                <color key="backgroundColor" name="PrimaryText"/>
+                                <color key="backgroundColor" systemColor="labelColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="8N0-6J-ECN">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -48,26 +47,25 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="game_cell" id="vKl-5E-SF9" customClass="GameCell" customModule="_048" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="58" height="37"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ami-bI-KEj">
-                                            <rect key="frame" x="0.0" y="0.0" width="58" height="37"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YAg-So-hJQ">
-                                                    <rect key="frame" x="8" y="8" width="42" height="21"/>
+                                                    <rect key="frame" x="43" y="53.5" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="0.8691134291" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="YAg-So-hJQ" secondAttribute="trailing" constant="8" id="LM2-ph-oiZ"/>
-                                                <constraint firstAttribute="bottom" secondItem="YAg-So-hJQ" secondAttribute="bottom" constant="8" id="NI9-06-8Zi"/>
-                                                <constraint firstItem="YAg-So-hJQ" firstAttribute="leading" secondItem="ami-bI-KEj" secondAttribute="leading" constant="8" id="a0f-SX-rsg"/>
-                                                <constraint firstItem="YAg-So-hJQ" firstAttribute="top" secondItem="ami-bI-KEj" secondAttribute="top" constant="8" id="b2G-Cr-0L7"/>
+                                                <constraint firstItem="YAg-So-hJQ" firstAttribute="centerX" secondItem="ami-bI-KEj" secondAttribute="centerX" id="Il9-oe-Rvx"/>
+                                                <constraint firstItem="YAg-So-hJQ" firstAttribute="centerY" secondItem="ami-bI-KEj" secondAttribute="centerY" id="xaP-a7-H5b"/>
                                             </constraints>
                                         </collectionViewCellContentView>
+                                        <color key="backgroundColor" red="0.68797489351733843" green="1" blue="0.9246316006057731" alpha="0.58895707941379671" colorSpace="custom" customColorSpace="displayP3"/>
                                         <connections>
                                             <outlet property="numberLabel" destination="YAg-So-hJQ" id="IYF-W5-d8x"/>
                                         </connections>
@@ -106,9 +104,9 @@
         </scene>
     </scenes>
     <resources>
-        <namedColor name="PrimaryText">
-            <color red="0.0" green="0.0" blue="0.0" alpha="0.85652798414230347" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

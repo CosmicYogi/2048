@@ -11,7 +11,11 @@ class ViewControllerDebugging: UIViewController {
 
     private var grid: [[Int?]] = Array(repeating: Array(repeating: nil, count: 4), count: 4)
     private var collectionView: UICollectionView! //= UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-
+    private var leftRotationCount = 0
+    private var rightRotationCount = 0
+    private var leftRotationShouldMergeNumbers = true
+    private var rightRotationShouldMergeNumbers = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         _init()
@@ -124,7 +128,6 @@ class ViewControllerDebugging: UIViewController {
         let randomUnOccupiedCellsLocation = arc4random_uniform(UInt32(unoccupiedCells.count))
         let seedLocation = unoccupiedCells[Int(randomUnOccupiedCellsLocation)]
 
-//        grid[randomRow][randomColum] = arc4random_uniform(3) > 1 ? 2 : 4
         grid[seedLocation.x][seedLocation.y] = arc4random_uniform(3) > 1 ? 2 : 4
         collectionView.reloadData()
 
@@ -137,69 +140,71 @@ class ViewControllerDebugging: UIViewController {
         }
     }
 
-//    private func transform(_ arrayCoordinate: (x: Int, y: Int)) -> (x: Int, y: Int) {
-//        return
-//    }
-
     private func upShift() {
-        print("up shift")
-//        grid = grid.map { $0.map { $0.map { $0 * 4 }}}
-        rotateSingleUp()
+        for i in 0..<grid[0].count {
+            var temp = [ grid[0][i], grid[1][i], grid[2][i], grid[3][i] ]
+            temp = squashArrayLeft(temp)
+            grid[0][i] = temp[0]
+            grid[1][i] = temp[1]
+            grid[2][i] = temp[2]
+            grid[3][i] = temp[3]
+        }
+
+        collectionView.reloadData()
     }
 
     private func downShift() {
-        print("down shift")
-        rotateSingleDown()
+        for i in 0..<grid[0].count {
+            var temp = [ grid[0][i], grid[1][i], grid[2][i], grid[3][i] ]
+            temp = squashArrayRight(temp)
+            grid[0][i] = temp[0]
+            grid[1][i] = temp[1]
+            grid[2][i] = temp[2]
+            grid[3][i] = temp[3]
+        }
+
+        collectionView.reloadData()
     }
 
     private func leftShift() {
-        print("left shift")
-        grid = grid.map { rotateSingleLeft($0) }
+        grid = grid.map { squashArrayLeft($0) }
         collectionView.reloadData()
     }
 
     private func rightShift() {
-        print("right shift")
-        grid = grid.map { rotateSingleRight($0) }
+        grid = grid.map { squashArrayRight($0) }
         collectionView.reloadData()
     }
 
-    private var stateLeft = 0
-    private var stateLeftCheck = true
-
-    private func rotateSingleLeft(_ array : [Int?]) -> [Int?]{
+    
+    private func squashArrayLeft(_ array : [Int?]) -> [Int?]{
         var array = array
         for i in (1...array.count).reversed() {
             if array[i - 1] == nil && i < array.count{
                 array[i - 1] = array[i]
                 array[i] = nil
             }
-
         }
         for var i in (1...array.count - 1).reversed() {
-            if let value = array[i - 1], let nextValue = array[i], value == nextValue, stateLeftCheck {
+            if let value = array[i - 1], let nextValue = array[i], value == nextValue, leftRotationShouldMergeNumbers {
                 array[i - 1] = value * 2
                 array[i] = nil
                 i -= 1
-                stateLeftCheck = false
+                leftRotationShouldMergeNumbers = false
                 break
             }
         }
-
-        if stateLeft < array.count {
-            stateLeft += 1
-            array = rotateSingleLeft(array)
+        if leftRotationCount < array.count {
+            leftRotationCount += 1
+            array = squashArrayLeft(array)
         } else {
-            stateLeft = 0
-            stateLeftCheck = true
+            leftRotationCount = 0
+            leftRotationShouldMergeNumbers = true
         }
         return array
     }
 
-    private var stateRight = 0
-    private var stateRightCheck = true
-
-    func rotateSingleRight(_ array : [Int?]) -> [Int?] {
+    func squashArrayRight(_ array : [Int?]) -> [Int?] {
         var array = array
         for i in (1...array.count - 1) {
             if array[i] == nil {
@@ -209,57 +214,22 @@ class ViewControllerDebugging: UIViewController {
 
         }
         for var i in (1...array.count - 1) {
-            if let value = array[i], let previousValue = array[i - 1], value == previousValue, stateRightCheck {
+            if let value = array[i], let previousValue = array[i - 1], value == previousValue, rightRotationShouldMergeNumbers {
                 array[i] = value * 2
                 array[i - 1] = nil
                 i += 1
-                stateRightCheck = false
-//                array = rotateSingleRight(array)
+                rightRotationShouldMergeNumbers = false
                 break
             }
         }
-
-        if stateRight < array.count {
-            stateRight += 1
-            array = rotateSingleRight(array)
+        if rightRotationCount < array.count {
+            rightRotationCount += 1
+            array = squashArrayRight(array)
         } else {
-            stateRight = 0
-            stateRightCheck = true
+            rightRotationCount = 0
+            rightRotationShouldMergeNumbers = true
         }
-
         return array
-    }
-
-    private var stateUp = 0
-    private var stateUpCheck = true
-
-    func rotateSingleUp() {
-        for i in 0..<grid[0].count {
-            var temp = [ grid[0][i], grid[1][i], grid[2][i], grid[3][i] ]
-            temp = rotateSingleLeft(temp)
-            grid[0][i] = temp[0]
-            grid[1][i] = temp[1]
-            grid[2][i] = temp[2]
-            grid[3][i] = temp[3]
-        }
-
-        collectionView.reloadData()
-    }
-
-    private var stateDown = 0
-    private var stateDownCheck = true
-
-    func rotateSingleDown() {
-        for i in 0..<grid[0].count {
-            var temp = [ grid[0][i], grid[1][i], grid[2][i], grid[3][i] ]
-            temp = rotateSingleRight(temp)
-            grid[0][i] = temp[0]
-            grid[1][i] = temp[1]
-            grid[2][i] = temp[2]
-            grid[3][i] = temp[3]
-        }
-
-        collectionView.reloadData()
     }
 }
 
@@ -285,10 +255,6 @@ extension ViewControllerDebugging: UICollectionViewDelegate, UICollectionViewDat
         let height = width
         return CGSize(width: width, height: height)
     }
-
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 2
-//    }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return .init(top: 2, left: 2, bottom: 2, right: 2)
