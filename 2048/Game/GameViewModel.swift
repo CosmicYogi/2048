@@ -48,7 +48,7 @@ class GameViewModel: BaseViewModel<GamePresenting> {
     private func seed() {
         let unoccupiedCells = getUnoccupiedCellsInGrid()
         guard unoccupiedCells.count > 0 else {
-            print("GameOver")
+            showGameOverAlert()
             return
         }
         let randomUnOccupiedCellsLocation = arc4random_uniform(UInt32(unoccupiedCells.count))
@@ -186,6 +186,20 @@ class GameViewModel: BaseViewModel<GamePresenting> {
         let scoreAttributedString = getAttributedNameValuePair(fromName: StringsProvider.ViewControllers.Game.score, value: "0")
         presenter.update(grid: grid)
         presenter.update(score: scoreAttributedString)
+    }
+    
+    private func showGameOverAlert() {
+        presenter.presentAlert(
+            withTitle: StringsProvider.ViewControllers.Game.gameOverTitle,
+            message: StringsProvider.ViewControllers.Game.gameOverMessage
+        )
+    }
+    
+    private func showVictoryAlert() {
+        presenter.presentAlert(
+            withTitle: StringsProvider.ViewControllers.Game.gameCompletionTitle,
+            message: StringsProvider.ViewControllers.Game.gameCompleteMessage(withScore: score)
+        )
     }
 }
 

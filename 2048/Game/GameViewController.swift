@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, AlertDisplaying {
 
     // MARK: - Outlets
     
@@ -127,5 +127,11 @@ extension GameViewController: GamePresenting {
 
     func update(score: NSAttributedString) {
         scoreLabel.attributedText = score
+    }
+    
+    func presentAlert(withTitle title: String, message: String) {
+        showAlert(withTitle: title, message: message, actionText: StringsProvider.ok) { [weak self] in
+            self?.viewModel.reset()
+        }
     }
 }

@@ -16,6 +16,12 @@ enum StringsProvider {
             static let score = "Score"
             static let welcome = "Welcome"
             static let newGame = "New Game"
+            static let gameOverTitle = "Game Over"
+            static let gameOverMessage = "Sorry, Game Over. Play again?"
+            static let gameCompletionTitle = "You Won!"
+            static func gameCompleteMessage(withScore scote: Int) -> String {
+                return "Congratulations!, You had won the game with the score of \(score)"
+            }
         }
     }
     

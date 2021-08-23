@@ -33,6 +33,7 @@
 		9468710E26D3B91800DF89E0 /* ClearSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9468710B26D3B91800DF89E0 /* ClearSans-Bold.ttf */; };
 		9468711226D3BBBB00DF89E0 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9468711126D3BBBB00DF89E0 /* Color.swift */; };
 		9468711526D3BBF400DF89E0 /* FontProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9468711426D3BBF400DF89E0 /* FontProvider.swift */; };
+		9468711826D3C68600DF89E0 /* AlertDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9468711726D3C68600DF89E0 /* AlertDisplaying.swift */; };
 		94879ED326D0B73B00633890 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94879ED226D0B73B00633890 /* AppDelegate.swift */; };
 		94879ED526D0B73B00633890 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94879ED426D0B73B00633890 /* SceneDelegate.swift */; };
 		94879EDC26D0B73E00633890 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94879EDB26D0B73E00633890 /* Assets.xcassets */; };
@@ -65,6 +66,7 @@
 		9468710B26D3B91800DF89E0 /* ClearSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ClearSans-Bold.ttf"; sourceTree = "<group>"; };
 		9468711126D3BBBB00DF89E0 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		9468711426D3BBF400DF89E0 /* FontProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontProvider.swift; sourceTree = "<group>"; };
+		9468711726D3C68600DF89E0 /* AlertDisplaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDisplaying.swift; sourceTree = "<group>"; };
 		94879ECF26D0B73B00633890 /* 2048.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 2048.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		94879ED226D0B73B00633890 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		94879ED426D0B73B00633890 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				946870ED26D34A7000DF89E0 /* BaseViewModel.swift */,
 				9468711126D3BBBB00DF89E0 /* Color.swift */,
 				9468711426D3BBF400DF89E0 /* FontProvider.swift */,
+				9468711726D3C68600DF89E0 /* AlertDisplaying.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -295,6 +298,7 @@
 				94879ED326D0B73B00633890 /* AppDelegate.swift in Sources */,
 				9468711526D3BBF400DF89E0 /* FontProvider.swift in Sources */,
 				946870DD26D2C60A00DF89E0 /* RootViewController.swift in Sources */,
+				9468711826D3C68600DF89E0 /* AlertDisplaying.swift in Sources */,
 				946870D426D2B6E000DF89E0 /* UIViewController+Extensions.swift in Sources */,
 				94879ED526D0B73B00633890 /* SceneDelegate.swift in Sources */,
 				946870C926D2A95300DF89E0 /* GameViewController.swift in Sources */,

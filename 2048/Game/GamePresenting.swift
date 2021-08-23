@@ -9,6 +9,7 @@ import UIKit
 
 protocol GamePresenting {
     func present(welcomeMessage: NSAttributedString)
+    func presentAlert(withTitle title: String, message: String)
     func update(grid: [[Int?]])
     func update(score: NSAttributedString)
 }
