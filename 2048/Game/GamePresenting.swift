@@ -13,4 +13,5 @@ protocol GamePresenting {
     func presentGameCompletedAlert(withTitle title: String, message: String)
     func update(grid: [[Int?]])
     func update(score: NSAttributedString)
+    func setUserInteractionEnabled(_ enabled: Bool)
 }

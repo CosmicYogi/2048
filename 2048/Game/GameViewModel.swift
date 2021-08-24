@@ -40,8 +40,10 @@ class GameViewModel: BaseViewModel<GamePresenting> {
         case .right: rightShift()
         }
         presenter.update(grid: grid)
+        presenter.setUserInteractionEnabled(false)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             self?.seed()
+            self?.presenter.setUserInteractionEnabled(true)
         }
     }
     

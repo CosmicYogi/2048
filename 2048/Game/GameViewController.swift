@@ -139,4 +139,11 @@ extension GameViewController: GamePresenting {
         showAlert(withTitle: title, message: message, actionText: StringsProvider.ok) {
         }
     }
+    
+    func setUserInteractionEnabled(_ enabled: Bool) {
+        guard let gestureRecognizers = view.gestureRecognizers else { return }
+        for gesture in gestureRecognizers {
+            gesture.isEnabled = enabled
+        }
+    }
 }
