@@ -37,7 +37,6 @@ class ViewControllerFactory {
         switch viewController {
         case .home: return HomeViewController.instance()
         case .game(let userName): return createGameViewController(fromUserName: userName)
-        // All the other cases would be handled here.
         }
     }
 

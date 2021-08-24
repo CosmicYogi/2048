@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Provides all the errors used by the app
 enum ErrorsProvider {
     static let invalidUser = NSError(domain: "Sorry, Please enter a valid username.", code: 0, userInfo: nil)
 }

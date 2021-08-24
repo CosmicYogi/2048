@@ -17,15 +17,22 @@ class GameViewController: UIViewController, AlertDisplaying {
     @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - Variables and constants
+    
     private let reusableIdentifier = "game_cell"
     private var userName: String!
     private var viewModel: GameViewModel!
     private var grid: [[Int?]] = []
     
+    
+    // MARK: - ViewController life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         _init()
     }
+    
+    
+    // MARK: - Initial setup
     
     private func _init() {
         initViews()
@@ -66,6 +73,9 @@ class GameViewController: UIViewController, AlertDisplaying {
         view.addGestureRecognizer(gestureRecognizerRight)
     }
     
+    
+    // MARK: - Selectors
+    
     @objc private func onSwipeGesture(gesture: UIGestureRecognizer) {
         guard let gesture = gesture as? UISwipeGestureRecognizer else { return }
         switch gesture.direction {
@@ -80,6 +90,7 @@ class GameViewController: UIViewController, AlertDisplaying {
     @objc private func reset() {
         viewModel.reset()
     }
+    
     
     // MARK: - Outside communication
     

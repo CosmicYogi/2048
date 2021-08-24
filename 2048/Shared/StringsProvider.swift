@@ -5,6 +5,7 @@
 //  Created by Mitesh Soni on 23/08/21.
 //
 
+/// Provides all the strings used by the app
 enum StringsProvider {
     enum ViewControllers {
         enum Home {
@@ -27,6 +28,7 @@ enum StringsProvider {
     
     static let ok = "OK"
     static let cancel = "Cancel"
+    static let caution = "Caution!"
     static let atTheRate = "@"
 }
 

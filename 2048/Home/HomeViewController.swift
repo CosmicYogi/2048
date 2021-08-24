@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeViewController: BaseViewController {
+class HomeViewController: BaseViewController, AlertDisplaying {
 
     // MARK: - Outlets
     @IBOutlet weak var userNameTextField: UITextField!
@@ -85,6 +85,7 @@ extension HomeViewController: HomePresenting {
     }
     
     func showError(_ error: Error) {
-        // TODO: - Show alert
+        showAlert(withTitle: StringsProvider.caution, message: error.localizedDescription, actionText: StringsProvider.ok) {
+        }
     }
 }

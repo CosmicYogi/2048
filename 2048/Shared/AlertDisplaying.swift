@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Any **UIViewController** can implement this protocol and start utilizing the alert displaying implementation it provides.
 protocol AlertDisplaying {
     func showAlert(withTitle: String, message: String, actionText: String, action: @escaping () -> Void)
 }
