@@ -134,4 +134,9 @@ extension GameViewController: GamePresenting {
             self?.viewModel.reset()
         }
     }
+    
+    func presentGameCompletedAlert(withTitle title: String, message: String) {
+        showAlert(withTitle: title, message: message, actionText: StringsProvider.ok) {
+        }
+    }
 }

@@ -20,7 +20,7 @@ enum StringsProvider {
             static let gameOverMessage = "Sorry, Game Over. Play again?"
             static let gameCompletionTitle = "You Won!"
             static func gameCompleteMessage(withScore scote: Int) -> String {
-                return "Congratulations!, You had won the game with the score of \(score)"
+                return "Congratulations!, You had won the game with the score of \(score). You can keep on playing!"
             }
         }
     }

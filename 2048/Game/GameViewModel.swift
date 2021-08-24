@@ -45,7 +45,28 @@ class GameViewModel: BaseViewModel<GamePresenting> {
         }
     }
     
+    func setUser(_ userName: String) {
+        let attributedWelcomeMessage = getAttributedNameValuePair(fromName: StringsProvider.ViewControllers.Game.welcome, value: userName)
+        presenter.present(welcomeMessage: attributedWelcomeMessage)
+        updateScore(0)
+    }
+    
+    func reset() {
+        grid = grid.map { $0.map { _ in nil }}
+        score = 0
+        let scoreAttributedString = getAttributedNameValuePair(fromName: StringsProvider.ViewControllers.Game.score, value: "0")
+        presenter.update(grid: grid)
+        presenter.update(score: scoreAttributedString)
+    }
+    
     private func seed() {
+        if hasWonGame() {
+            presenter.presentGameCompletedAlert(
+                withTitle: StringsProvider.ViewControllers.Game.gameCompletionTitle,
+                message: StringsProvider.ViewControllers.Game.gameCompleteMessage(withScore: score)
+            )
+            return
+        }
         let unoccupiedCells = getUnoccupiedCellsInGrid()
         guard unoccupiedCells.count > 0 else {
             showGameOverAlert()
@@ -128,7 +149,7 @@ class GameViewModel: BaseViewModel<GamePresenting> {
         return array
     }
 
-    func squashArrayRight(_ array : [Int?]) -> [Int?] {
+    private func squashArrayRight(_ array : [Int?]) -> [Int?] {
         var array = array
         for i in (1...array.count - 1) {
             if array[i] == nil {
@@ -157,13 +178,7 @@ class GameViewModel: BaseViewModel<GamePresenting> {
         return array
     }
     
-    func setUser(_ userName: String) {
-        let attributedWelcomeMessage = getAttributedNameValuePair(fromName: StringsProvider.ViewControllers.Game.welcome, value: userName)
-        presenter.present(welcomeMessage: attributedWelcomeMessage)
-        updateScore(0)
-    }
-    
-    func updateScore(_ score: Int) {
+    private func updateScore(_ score: Int) {
         self.score += score
         let scoreAttributedString = getAttributedNameValuePair(fromName: StringsProvider.ViewControllers.Game.score, value: String(self.score))
         presenter.update(score: scoreAttributedString)
@@ -180,14 +195,6 @@ class GameViewModel: BaseViewModel<GamePresenting> {
         return nameAttributedString
     }
     
-    func reset() {
-        grid = grid.map { $0.map { _ in nil }}
-        score = 0
-        let scoreAttributedString = getAttributedNameValuePair(fromName: StringsProvider.ViewControllers.Game.score, value: "0")
-        presenter.update(grid: grid)
-        presenter.update(score: scoreAttributedString)
-    }
-    
     private func showGameOverAlert() {
         presenter.presentAlert(
             withTitle: StringsProvider.ViewControllers.Game.gameOverTitle,
@@ -200,6 +207,11 @@ class GameViewModel: BaseViewModel<GamePresenting> {
             withTitle: StringsProvider.ViewControllers.Game.gameCompletionTitle,
             message: StringsProvider.ViewControllers.Game.gameCompleteMessage(withScore: score)
         )
+    }
+    
+    private func hasWonGame() -> Bool {
+        let allNumbers = grid.flatMap { $0 }
+        return allNumbers.contains(2048)
     }
 }
 
